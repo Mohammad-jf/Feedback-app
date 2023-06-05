@@ -105,6 +105,7 @@ header {
   display: flex;
   flex-direction: row;
   border: 1px solid #ccc;
+  margin-top: 0.8rem;
   padding: 8px 10px;
   border-radius: 8px;
 }
