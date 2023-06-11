@@ -1,17 +1,29 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Card from './../shared/Card';
 import { useState } from 'react';
 import Button from '../shared/Button';
 import RatingSelect from './RatingSelect';
+import FeedBackContext from '../context/FeedBackContext';
+import { useEffect } from 'react';
 
 
 
-const FeedbackForm = ({handleAdd}) => {
+const FeedbackForm = () => {
     const [text, setText] = useState('');
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [message, setMessage] = useState('');
-    const [rating,setRating] = useState(10);
-    
+    const [rating, setRating] = useState(10);
+    const { addFeedback, feedbackEdit, updateFeedback } = useContext(FeedBackContext);
+
+    useEffect(() => {
+        if (feedbackEdit.edit === true) {
+            setBtnDisabled(false);
+            setText(feedbackEdit.item.text);
+            setRating(feedbackEdit.item.rating)
+        }
+
+    }, [feedbackEdit])
+
 
     const handleTextchange = (e) => {
         //input validation
@@ -31,25 +43,35 @@ const FeedbackForm = ({handleAdd}) => {
 
 
     // add feedback
-    const handleFeedback = (e)=>{
+    const handleFeedback = (e) => {
         e.preventDefault();
-        if(text.trim().length > 10){
+        if (text.trim().length > 10) {
+            
             const newFeedback = {
                 text,
                 rating,
             }
-            handleAdd(newFeedback)
-            setText('');
+
+            if (feedbackEdit.edit === true) {
+                updateFeedback(feedbackEdit.item.id,newFeedback)
+                setText('');
+
+            } else {
+                addFeedback(newFeedback)
+                setText('');
+
+            }
         }
 
     }
+
 
     return (
         <Card>
             <form onSubmit={handleFeedback}>
                 <h2>Wow would you rate your service with us?</h2>
 
-                <RatingSelect select={(rating)=>setRating(rating)}/>
+                <RatingSelect select={(rating) => setRating(rating)} />
 
                 <div className="input-group">
                     {/* text input */}
@@ -59,10 +81,10 @@ const FeedbackForm = ({handleAdd}) => {
                         value={text} />
 
                     {/* submit button */}
-                    <Button 
-                    type='submit'
-                    version='secondary'
-                    isDisabled={btnDisabled}>Send
+                    <Button
+                        type='submit'
+                        version='secondary'
+                        isDisabled={btnDisabled}>Send
                     </Button>
                 </div>
 
