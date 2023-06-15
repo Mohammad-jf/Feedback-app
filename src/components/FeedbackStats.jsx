@@ -2,15 +2,15 @@ import React, { useContext } from 'react'
 import FeedBackContext from '../context/FeedBackContext';
 
 const FeedbackStats = () => {
-    const {feedbacks} = useContext(FeedBackContext)
+    const { feedbacks } = useContext(FeedBackContext)
 
     //average rating
     let average = feedbacks.reduce((acc, current) => {
         return acc + current.rating;
     }, 0) / feedbacks.length;
 
-    average = average.toFixed(1).replace(/[.,]0$/,'');
-    
+    average = average.toFixed(1).replace(/[.,]0$/, '');
+
     return (
         <div className='feedback-stats'>
             <h4>{feedbacks.length} Reviews</h4>

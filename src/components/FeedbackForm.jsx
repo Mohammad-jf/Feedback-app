@@ -46,14 +46,14 @@ const FeedbackForm = () => {
     const handleFeedback = (e) => {
         e.preventDefault();
         if (text.trim().length > 10) {
-            
+
             const newFeedback = {
                 text,
                 rating,
             }
 
             if (feedbackEdit.edit === true) {
-                updateFeedback(feedbackEdit.item.id,newFeedback)
+                updateFeedback(feedbackEdit.item.id, newFeedback)
                 setText('');
 
             } else {

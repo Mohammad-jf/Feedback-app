@@ -8,7 +8,7 @@ import FeedBackContext from '../context/FeedBackContext';
 
 const FeedBackItem = ({ item }) => {
     const { handleDelete, editFeedback } = useContext(FeedBackContext);
-    
+
     return (
         <Card>
             <div className="num-display">{item.rating}</div>
