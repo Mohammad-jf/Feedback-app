@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-
+import useLocalStorage from './../hooks/useLocalStorage';
 // first you create a context
 const FeedBackContext = createContext();
 
@@ -9,8 +9,10 @@ export const FeedbackProvider = ({ children }) => {
     // spinner state
     const [isLoading, setIsLoading] = useState(true);
 
+    const [localFeedBacks, setLocalFeedBacks] = useLocalStorage('feedbacks', []);
+
     // ARRAY OF FEEDBACKS
-    const [feedbacks, setFeedbacks] = useState([]);
+    const [feedbacks, setFeedbacks] = useState(localFeedBacks);
 
     // edited feedback state
     const [feedbackEdit, setFeedbackEdit] = useState({
@@ -22,6 +24,7 @@ export const FeedbackProvider = ({ children }) => {
     // adding feedback
     const addFeedback = (newFeedback) => {
         setFeedbacks([...feedbacks, newFeedback]);
+        setLocalFeedBacks([...feedbacks, newFeedback]);
     }
 
 
@@ -31,6 +34,7 @@ export const FeedbackProvider = ({ children }) => {
         if (window.confirm('are you sure you want to delete this ?')) {
             const feedbackList = feedbacks.filter((item) => item.id !== id);
             setFeedbacks(feedbackList);
+            setLocalFeedBacks(feedbackList)
         }
     }
 
@@ -46,7 +50,7 @@ export const FeedbackProvider = ({ children }) => {
 
     // updating the feedback
     const updateFeedback = (id, updItem) => {
-        setFeedbacks(feedbacks.map((item) => {
+        const editedFeedBacks = feedbacks.map((item) => {
             if (item.id === id) {
                 return {
                     ...item, ...updItem
@@ -54,7 +58,9 @@ export const FeedbackProvider = ({ children }) => {
             } else {
                 return item
             }
-        }))
+        })
+        setFeedbacks(editedFeedBacks)
+        setLocalFeedBacks(editedFeedBacks)
     }
 
 
