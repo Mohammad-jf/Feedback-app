@@ -12,7 +12,7 @@ export const FeedbackProvider = ({ children }) => {
     const [localFeedBacks, setLocalFeedBacks] = useLocalStorage('feedbacks', []);
 
     // ARRAY OF FEEDBACKS
-    const [feedbacks, setFeedbacks] = useState(localFeedBacks);
+    const [feedbacks, setFeedbacks] = useState(localFeedBacks.length > 0 ? localFeedBacks : []);
 
     // edited feedback state
     const [feedbackEdit, setFeedbackEdit] = useState({
