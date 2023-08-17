@@ -5,14 +5,18 @@ import Button from '../shared/Button';
 import RatingSelect from './RatingSelect';
 import FeedBackContext from '../context/FeedBackContext';
 import { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid'
+
 
 
 
 const FeedbackForm = () => {
     const [text, setText] = useState('');
+    const [rating, setRating] = useState(10);
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [message, setMessage] = useState('');
-    const [rating, setRating] = useState(10);
+
+    // actions from context
     const { addFeedback, feedbackEdit, updateFeedback } = useContext(FeedBackContext);
 
     useEffect(() => {
@@ -48,12 +52,16 @@ const FeedbackForm = () => {
         if (text.trim().length > 10) {
 
             const newFeedback = {
+                id: uuidv4(),
                 text,
                 rating,
             }
 
+            const editedFeedback = { ...newFeedback };
+            delete editedFeedback.id;
+
             if (feedbackEdit.edit === true) {
-                updateFeedback(feedbackEdit.item.id, newFeedback)
+                updateFeedback(feedbackEdit.item.id, editedFeedback);
                 setText('');
 
             } else {
